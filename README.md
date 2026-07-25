@@ -44,7 +44,7 @@ The site deliberately has no Jekyll, Node.js, npm, static-site generator, forms,
 
 ## Change the GitHub contact or update date
 
-`site.config.json` is the canonical reference for the GitHub Issues contact, private security-reporting URL, and document date. Because this repository is a static site without a generator, update the visible values in all affected HTML, `security.txt`, `sitemap.xml`, and documentation at the same time. The validator checks the configured constants and required legal-page values for consistency.
+`site.config.json` is the canonical reference for the temporary support email, GitHub Issues contact, private security-reporting URL, and document date. The support email is published only in Privacy Policy and Data Deletion pages and remains the working deletion-request mechanism until a Meta Data Deletion Callback is implemented. Because this repository is a static site without a generator, update the visible values in all affected HTML, `security.txt`, `sitemap.xml`, and documentation at the same time. The validator checks the configured constants and required legal-page values for consistency.
 
 ## Local development
 

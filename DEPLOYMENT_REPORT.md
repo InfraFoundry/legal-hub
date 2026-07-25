@@ -26,6 +26,7 @@ The English-only, GitHub-contact implementation was pushed in `feat/github-conta
 - pull-request and main-branch validation workflow;
 - GitHub Actions Pages deployment workflow;
 - GitHub Issues and private security reporting configured as contact channels;
+- temporary support email retained only in Privacy Policy and Data Deletion pages until a Meta Data Deletion Callback is implemented;
 - no analytics, cookies, forms, external scripts, external fonts, or CDN dependencies.
 
 ## Validation
@@ -35,8 +36,8 @@ The English-only, GitHub-contact implementation was pushed in `feat/github-conta
 - pull-request validation: PASS, run `30174039071`
 - main validation: PASS, run `30174049860`
 - Pages deployment: PASS, run `30174049862`
-- live HTTP and content: PASS; all 15 checked HTTPS paths returned 200, all HTML is English-only, the removed email address and email links are absent, and contact pages contain GitHub Issues and private security-reporting links
-- mobile layout at 360 px: PASS on the RepoLynx Contact page; no horizontal overflow, one `h1`, no scripts or forms, no Cyrillic or email link, and all GitHub contact routes present
+- live HTTP and content: PASS; all 15 checked HTTPS paths returned 200, all HTML is English-only, and contact pages contain GitHub Issues and private security-reporting links
+- mobile layout at 360 px: PASS on the RepoLynx Contact page; no horizontal overflow, one `h1`, no scripts or forms, no Cyrillic, and all GitHub contact routes present
 
 ## Published URLs
 
@@ -65,7 +66,7 @@ The English-only, GitHub-contact implementation was pushed in `feat/github-conta
 - trackers: none
 - external scripts: none
 - forms: none
-- email addresses and email links: none
+- support email: limited to the configured address in Privacy Policy and Data Deletion pages
 - private vulnerability reporting: enabled
 - HTTPS: enforced by GitHub Pages
 
