@@ -1,20 +1,20 @@
 # InfraFoundry Legal Hub Deployment Report
 
-- Generated at UTC: 2026-07-25 20:26:07 UTC
-- Generated at local time: 2026-07-25 23:26:07 +03:00
+- Generated at UTC: 2026-07-25 20:41:32 UTC
+- Generated at local time: 2026-07-25 23:41:32 +03:00
 - Repository: <https://github.com/InfraFoundry/legal-hub>
 - Branch: `main`
-- Implementation commit SHA: `b98554229cc45d418f49f94daac7064f35c83708`
-- Pull request: <https://github.com/InfraFoundry/legal-hub/pull/1>
-- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30173510591>
-- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30173510577>
+- Implementation commit SHA: `8c4c1f2d6bc35567fb484344e403b50ae820b4b9`
+- Pull request: <https://github.com/InfraFoundry/legal-hub/pull/2>
+- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174049860>
+- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174049862>
 - Pages URL: <https://infrafoundry.github.io/legal-hub/>
 
 ## Result
 
 `COMPLETE`
 
-The implementation was pushed in `feat/legal-hub-v1`, reviewed through pull request #1, merged into `main`, validated by GitHub Actions, and deployed to GitHub Pages. GitHub Pages uses the `workflow` build type and enforces HTTPS.
+The English-only, GitHub-contact implementation was pushed in `feat/github-contact-english-only`, reviewed through pull request #2, merged into `main`, validated by GitHub Actions, and deployed to GitHub Pages. GitHub Pages uses the `workflow` build type and enforces HTTPS.
 
 ## Implemented
 
@@ -31,12 +31,12 @@ The implementation was pushed in `feat/legal-hub-v1`, reviewed through pull requ
 ## Validation
 
 - local validator: `LEGAL_HUB_VALIDATION=PASS`
-- local HTTP: all nine required paths returned 200 with non-empty bodies
-- pull-request validation: PASS, run `30173484328`
-- main validation: PASS, run `30173510591`
-- Pages deployment: PASS, run `30173510577`
-- live HTTP: PASS; all nine required HTTPS URLs returned 200 with non-empty bodies and no GitHub 404
-- mobile layout at 360 px: PASS on the published RepoLynx Privacy Policy; no horizontal overflow, stylesheet loaded, one `h1`, no scripts or forms
+- local HTTP: all 15 checked paths returned 200 with non-empty bodies
+- pull-request validation: PASS, run `30174039071`
+- main validation: PASS, run `30174049860`
+- Pages deployment: PASS, run `30174049862`
+- live HTTP and content: PASS; all 15 checked HTTPS paths returned 200, all HTML is English-only, the removed email address and email links are absent, and contact pages contain GitHub Issues and private security-reporting links
+- mobile layout at 360 px: PASS on the RepoLynx Contact page; no horizontal overflow, one `h1`, no scripts or forms, no Cyrillic or email link, and all GitHub contact routes present
 
 ## Published URLs
 
@@ -65,6 +65,8 @@ The implementation was pushed in `feat/legal-hub-v1`, reviewed through pull requ
 - trackers: none
 - external scripts: none
 - forms: none
+- email addresses and email links: none
+- private vulnerability reporting: enabled
 - HTTPS: enforced by GitHub Pages
 
 ## Manual Actions Required
