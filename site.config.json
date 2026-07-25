@@ -1,0 +1,20 @@
+{
+  "organization": "InfraFoundry",
+  "repository": "legal-hub",
+  "base_url": "https://infrafoundry.github.io/legal-hub",
+  "support_email": "kodo.app.labs@gmail.com",
+  "last_updated": "2026-07-25",
+  "projects": {
+    "repolynx": {
+      "display_name": "RepoLynx",
+      "app_name": "RepoLynx Media Publisher",
+      "privacy_path": "/repolynx/privacy.html",
+      "data_deletion_path": "/repolynx/data-deletion.html"
+    },
+    "gitpulse": {
+      "display_name": "GitPulse",
+      "privacy_path": "/gitpulse/privacy.html",
+      "data_deletion_path": "/gitpulse/data-deletion.html"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://infrafoundry.github.io/legal-hub/sitemap.xml
