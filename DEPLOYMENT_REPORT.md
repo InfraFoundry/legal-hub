@@ -1,20 +1,20 @@
 # InfraFoundry Legal Hub Deployment Report
 
-- Generated at UTC: 2026-07-25 20:51:12 UTC
-- Generated at local time: 2026-07-25 23:51:12 +03:00
+- Generated at UTC: 2026-07-25 23:34:12 UTC
+- Generated at local time: 2026-07-26 02:34:12 +03:00
 - Repository: <https://github.com/InfraFoundry/legal-hub>
 - Branch: `main`
-- Implementation commit SHA: `5d30f1a9f6515f5652ba878b4db6121be1d50760`
-- Pull request: <https://github.com/InfraFoundry/legal-hub/pull/3>
-- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174357465>
-- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174357461>
+- Implementation commit SHA: `937ec89bbea47745835803ad302d66a3d962f4f4`
+- Change delivery: direct push to `main`
+- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30179608682>
+- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30179608711>
 - Pages URL: <https://infrafoundry.github.io/legal-hub/>
 
 ## Result
 
 `COMPLETE`
 
-The English-only implementation with a temporary support-email deletion mechanism was pushed in `feat/temporary-email-node24-actions`, reviewed through pull request #3, merged into `main`, validated by GitHub Actions, and deployed to GitHub Pages. GitHub Pages uses the `workflow` build type and enforces HTTPS.
+The Pages artifact configuration now explicitly includes hidden files, so `.well-known/security.txt` is published with the rest of the English-only static site. Commit `937ec89bbea47745835803ad302d66a3d962f4f4` was validated by GitHub Actions and deployed to GitHub Pages. The legal text, existing URLs, temporary deletion email, and site structure were not changed.
 
 ## Implemented
 
@@ -25,6 +25,7 @@ The English-only implementation with a temporary support-email deletion mechanis
 - standard-library Python validation;
 - pull-request and main-branch validation workflow;
 - GitHub Actions Pages deployment workflow using Node 24-compatible action majors: `actions/checkout@v7`, `actions/setup-python@v7`, `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5`, and `actions/deploy-pages@v5`;
+- Pages artifact upload configured with `path: "."` and `include-hidden-files: true`;
 - GitHub Issues and private security reporting configured as contact channels;
 - temporary support email retained only in Privacy Policy and Data Deletion pages until a Meta Data Deletion Callback is implemented;
 - no analytics, cookies, forms, external scripts, external fonts, or CDN dependencies.
@@ -33,11 +34,12 @@ The English-only implementation with a temporary support-email deletion mechanis
 
 - local validator: `LEGAL_HUB_VALIDATION=PASS`
 - local sitemap validation: PASS; all 11 listed URLs map to existing files and are unique HTTPS URLs under the configured Pages base URL
-- pull-request validation: PASS, run `30174337060`
-- main validation: PASS, run `30174357465`
-- Pages deployment: PASS, run `30174357461`
-- live sitemap HTTP and content: PASS; all 11 listed HTTPS URLs returned 200 with non-empty bodies and no GitHub Pages 404 response
-- live language check: PASS; no Cyrillic content or language switchers are present
+- main validation: PASS, run `30179608682`
+- Pages deployment: PASS, run `30179608711`
+- live HTML HTTP and content: PASS; all 12 repository HTML pages returned 200 with non-empty bodies and no GitHub Pages 404 response, including `404.html`, which is not listed in the sitemap
+- live service URLs: PASS; `/.well-known/security.txt`, `/robots.txt`, `/sitemap.xml`, and `/404.html` each returned HTTP 200
+- live security.txt: PASS; `/.well-known/security.txt` returned HTTP 200 with `text/plain; charset=utf-8`
+- live English-only check: PASS across all 12 HTML pages; no Cyrillic characters, `Русский` label, or language-switcher markup was found
 - live support-email scope: PASS; the support email and `Meta Data Deletion Callback` notice appear only on the four Privacy Policy and Data Deletion URLs
 - mobile layout at 360 px: PASS on the RepoLynx Contact page; no horizontal overflow, one `h1`, no scripts or forms, no Cyrillic, and all GitHub contact routes present
 
@@ -69,6 +71,7 @@ The English-only implementation with a temporary support-email deletion mechanis
 - external scripts: none
 - forms: none
 - support email: limited to the configured address in Privacy Policy and Data Deletion pages
+- published security.txt: PASS; HTTP 200 at <https://infrafoundry.github.io/legal-hub/.well-known/security.txt>
 - private vulnerability reporting: enabled
 - HTTPS: enforced by GitHub Pages
 
