@@ -1,18 +1,20 @@
 # InfraFoundry Legal Hub Deployment Report
 
-- Generated at UTC: 2026-07-25 20:04:41 UTC
-- Generated at local time: 2026-07-25 23:04:41 +03:00
+- Generated at UTC: 2026-07-25 20:26:07 UTC
+- Generated at local time: 2026-07-25 23:26:07 +03:00
 - Repository: <https://github.com/InfraFoundry/legal-hub>
-- Branch: `feat/legal-hub-v1`
-- Implementation commit SHA: `ec160791dface1a802c6b49bf682a53f0c77a3bf`
-- Workflow run: Not created; remote rejected branch push
+- Branch: `main`
+- Implementation commit SHA: `b98554229cc45d418f49f94daac7064f35c83708`
+- Pull request: <https://github.com/InfraFoundry/legal-hub/pull/1>
+- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30173510591>
+- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30173510577>
 - Pages URL: <https://infrafoundry.github.io/legal-hub/>
 
 ## Result
 
-`BLOCKED`
+`COMPLETE`
 
-The complete implementation is committed locally. A push to `origin/feat/legal-hub-v1` was attempted and rejected with HTTP 403 because the available Git credential belongs to `maksim4351`, which does not have write permission for `InfraFoundry/legal-hub`. The browser GitHub session is signed out, and GitHub CLI has no authenticated host. Remote publication cannot be completed without an account that has repository write access.
+The implementation was pushed in `feat/legal-hub-v1`, reviewed through pull request #1, merged into `main`, validated by GitHub Actions, and deployed to GitHub Pages. GitHub Pages uses the `workflow` build type and enforces HTTPS.
 
 ## Implemented
 
@@ -30,16 +32,25 @@ The complete implementation is committed locally. A push to `origin/feat/legal-h
 
 - local validator: `LEGAL_HUB_VALIDATION=PASS`
 - local HTTP: all nine required paths returned 200 with non-empty bodies
-- GitHub Actions: not run; the branch could not be published
-- Pages: not enabled or deployed from this implementation
-- live HTTP: all nine required URLs returned HTTP 404 on 2026-07-25
-- mobile layout at 360 px: PASS for the root page and RepoLynx Privacy Policy; no horizontal overflow, stylesheet loaded, one `h1`, and EN/RU sections present
+- pull-request validation: PASS, run `30173484328`
+- main validation: PASS, run `30173510591`
+- Pages deployment: PASS, run `30173510577`
+- live HTTP: PASS; all nine required HTTPS URLs returned 200 with non-empty bodies and no GitHub 404
+- mobile layout at 360 px: PASS on the published RepoLynx Privacy Policy; no horizontal overflow, stylesheet loaded, one `h1`, no scripts or forms, and EN/RU sections present
 
 ## Published URLs
 
 - Legal Hub: <https://infrafoundry.github.io/legal-hub/>
 - RepoLynx: <https://infrafoundry.github.io/legal-hub/repolynx/>
+- RepoLynx Privacy: <https://infrafoundry.github.io/legal-hub/repolynx/privacy.html>
+- RepoLynx Data Deletion: <https://infrafoundry.github.io/legal-hub/repolynx/data-deletion.html>
+- RepoLynx Terms: <https://infrafoundry.github.io/legal-hub/repolynx/terms.html>
+- RepoLynx Contact: <https://infrafoundry.github.io/legal-hub/repolynx/contact.html>
 - GitPulse: <https://infrafoundry.github.io/legal-hub/gitpulse/>
+- GitPulse Privacy: <https://infrafoundry.github.io/legal-hub/gitpulse/privacy.html>
+- GitPulse Data Deletion: <https://infrafoundry.github.io/legal-hub/gitpulse/data-deletion.html>
+- GitPulse Terms: <https://infrafoundry.github.io/legal-hub/gitpulse/terms.html>
+- GitPulse Contact: <https://infrafoundry.github.io/legal-hub/gitpulse/contact.html>
 
 ## Meta Values
 
@@ -54,17 +65,11 @@ The complete implementation is committed locally. A push to `origin/feat/legal-h
 - trackers: none
 - external scripts: none
 - forms: none
-- HTTPS: all committed canonical and public URLs use HTTPS
+- HTTPS: enforced by GitHub Pages
 
 ## Manual Actions Required
 
-Authenticate GitHub CLI on this workstation with an account that has write and admin access to `InfraFoundry/legal-hub`, then resume this Codex task. Codex will push the branch, open the pull request, run and verify Actions, configure the Pages source shown below, and repeat the live HTTP checks.
-
-```text
-Repository → Settings → Pages
-→ Build and deployment
-→ Source → GitHub Actions
-```
+None.
 
 ## Future Backend Requirement
 
