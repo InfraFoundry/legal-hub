@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -13,9 +14,21 @@ from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://infrafoundry.github.io/legal-hub"
+SUPPORT_EMAIL = "kodo.app.labs@gmail.com"
 CONTACT_URL = "https://github.com/InfraFoundry/legal-hub/issues"
 SECURITY_CONTACT_URL = (
     "https://github.com/InfraFoundry/legal-hub/security/advisories/new"
+)
+
+EMAIL_ALLOWED_FILES = frozenset(
+    {
+        "site.config.json",
+        "scripts/validate_site.py",
+        "repolynx/privacy.html",
+        "repolynx/data-deletion.html",
+        "gitpulse/privacy.html",
+        "gitpulse/data-deletion.html",
+    }
 )
 
 REQUIRED_FILES = (
@@ -214,6 +227,7 @@ def validate_config(errors: list[str]) -> None:
         "organization": "InfraFoundry",
         "repository": "legal-hub",
         "base_url": BASE_URL,
+        "support_email": SUPPORT_EMAIL,
         "contact_url": CONTACT_URL,
         "security_contact_url": SECURITY_CONTACT_URL,
         "last_updated": "2026-07-25",
@@ -221,8 +235,6 @@ def validate_config(errors: list[str]) -> None:
     for key, value in expected.items():
         if config.get(key) != value:
             errors.append(f"site.config.json has unexpected {key!r}")
-    if "support_email" in config:
-        errors.append("site.config.json must not contain support_email")
 
 
 def validate_html(errors: list[str]) -> None:
@@ -241,8 +253,8 @@ def validate_html(errors: list[str]) -> None:
             errors.append(f"{relative}: missing HTML doctype")
         if "http://" in text.lower():
             errors.append(f"{relative}: insecure http:// URL found")
-        if "mailto:" in text.lower():
-            errors.append(f"{relative}: email links are not allowed")
+        if "mailto:" in text.lower() and relative not in EMAIL_ALLOWED_FILES:
+            errors.append(f"{relative}: email links are not allowed on this page")
         if re.search(r"[\u0400-\u04ff]", text):
             errors.append(f"{relative}: Cyrillic text is not allowed")
 
@@ -296,18 +308,18 @@ def validate_policy_content(errors: list[str]) -> None:
         "repolynx": {
             "privacy": (
                 "RepoLynx",
-                CONTACT_URL,
+                SUPPORT_EMAIL,
                 "data-deletion.html",
-                "GitHub Issues are public",
+                "Meta Data Deletion Callback",
                 "password",
                 "access token",
             ),
             "deletion": (
-                CONTACT_URL,
+                SUPPORT_EMAIL,
                 "RepoLynx Data Deletion Request",
                 "7 days",
                 "30 days",
-                "GitHub Issues are public",
+                "Meta Data Deletion Callback",
                 "password",
                 "access token",
             ),
@@ -315,18 +327,18 @@ def validate_policy_content(errors: list[str]) -> None:
         "gitpulse": {
             "privacy": (
                 "GitPulse",
-                CONTACT_URL,
+                SUPPORT_EMAIL,
                 "data-deletion.html",
-                "GitHub Issues are public",
+                "Meta Data Deletion Callback",
                 "password",
                 "access token",
             ),
             "deletion": (
-                CONTACT_URL,
+                SUPPORT_EMAIL,
                 "GitPulse Data Deletion Request",
                 "7 days",
                 "30 days",
-                "GitHub Issues are public",
+                "Meta Data Deletion Callback",
                 "password",
                 "access token",
             ),
@@ -372,12 +384,42 @@ def validate_policy_content(errors: list[str]) -> None:
 def validate_service_files(errors: list[str]) -> None:
     sitemap_path = ROOT / "sitemap.xml"
     if sitemap_path.is_file():
-        sitemap = sitemap_path.read_text(encoding="utf-8")
-        for url in SITEMAP_URLS:
-            if f"<loc>{url}</loc>" not in sitemap:
-                errors.append(f"sitemap.xml: missing URL {url}")
-        if sitemap.count("<url>") != len(SITEMAP_URLS):
-            errors.append("sitemap.xml: unexpected number of URL entries")
+        try:
+            sitemap_root = ET.parse(sitemap_path).getroot()
+        except (ET.ParseError, OSError) as exc:
+            errors.append(f"sitemap.xml: invalid XML: {exc}")
+        else:
+            namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+            sitemap_urls = [
+                (element.text or "").strip()
+                for element in sitemap_root.findall("sm:url/sm:loc", namespace)
+            ]
+            if not sitemap_urls:
+                errors.append("sitemap.xml: no URL entries found")
+            if len(sitemap_urls) != len(set(sitemap_urls)):
+                errors.append("sitemap.xml: duplicate URL entries found")
+            for expected_url in SITEMAP_URLS:
+                if expected_url not in sitemap_urls:
+                    errors.append(f"sitemap.xml: missing URL {expected_url}")
+            if len(sitemap_urls) != len(SITEMAP_URLS):
+                errors.append("sitemap.xml: unexpected number of URL entries")
+
+            for sitemap_url in sitemap_urls:
+                parsed = urlparse(sitemap_url)
+                if (
+                    parsed.scheme != "https"
+                    or parsed.netloc != "infrafoundry.github.io"
+                    or not sitemap_url.startswith(f"{BASE_URL}/")
+                ):
+                    errors.append(
+                        f"sitemap.xml: URL is outside the HTTPS site: {sitemap_url}"
+                    )
+                    continue
+                target = local_target(sitemap_path, sitemap_url)
+                if target is None or not target.is_file():
+                    errors.append(
+                        f"sitemap.xml: URL has no local file: {sitemap_url}"
+                    )
 
     robots_path = ROOT / "robots.txt"
     if robots_path.is_file():
@@ -416,8 +458,15 @@ def validate_secret_hygiene(errors: list[str]) -> None:
     for path in iter_text_files():
         relative = path.relative_to(ROOT).as_posix()
         text = path.read_text(encoding="utf-8", errors="replace")
-        if EMAIL_ADDRESS_PATTERN.search(text):
-            errors.append(f"{relative}: email address found")
+        email_addresses = EMAIL_ADDRESS_PATTERN.findall(text)
+        if email_addresses:
+            if relative not in EMAIL_ALLOWED_FILES:
+                errors.append(f"{relative}: email address is not allowed")
+            for email_address in email_addresses:
+                if email_address.lower() != SUPPORT_EMAIL:
+                    errors.append(
+                        f"{relative}: unexpected email address {email_address}"
+                    )
         for pattern in assignment_patterns:
             if pattern.search(text):
                 errors.append(
