@@ -1,20 +1,20 @@
 # InfraFoundry Legal Hub Deployment Report
 
-- Generated at UTC: 2026-07-25 20:41:32 UTC
-- Generated at local time: 2026-07-25 23:41:32 +03:00
+- Generated at UTC: 2026-07-25 20:51:12 UTC
+- Generated at local time: 2026-07-25 23:51:12 +03:00
 - Repository: <https://github.com/InfraFoundry/legal-hub>
 - Branch: `main`
-- Implementation commit SHA: `8c4c1f2d6bc35567fb484344e403b50ae820b4b9`
-- Pull request: <https://github.com/InfraFoundry/legal-hub/pull/2>
-- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174049860>
-- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174049862>
+- Implementation commit SHA: `5d30f1a9f6515f5652ba878b4db6121be1d50760`
+- Pull request: <https://github.com/InfraFoundry/legal-hub/pull/3>
+- Validation run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174357465>
+- Pages workflow run: <https://github.com/InfraFoundry/legal-hub/actions/runs/30174357461>
 - Pages URL: <https://infrafoundry.github.io/legal-hub/>
 
 ## Result
 
 `COMPLETE`
 
-The English-only, GitHub-contact implementation was pushed in `feat/github-contact-english-only`, reviewed through pull request #2, merged into `main`, validated by GitHub Actions, and deployed to GitHub Pages. GitHub Pages uses the `workflow` build type and enforces HTTPS.
+The English-only implementation with a temporary support-email deletion mechanism was pushed in `feat/temporary-email-node24-actions`, reviewed through pull request #3, merged into `main`, validated by GitHub Actions, and deployed to GitHub Pages. GitHub Pages uses the `workflow` build type and enforces HTTPS.
 
 ## Implemented
 
@@ -24,7 +24,7 @@ The English-only, GitHub-contact implementation was pushed in `feat/github-conta
 - required root index, 404, robots, sitemap, security.txt, `.nojekyll`, favicon, and shared CSS;
 - standard-library Python validation;
 - pull-request and main-branch validation workflow;
-- GitHub Actions Pages deployment workflow;
+- GitHub Actions Pages deployment workflow using Node 24-compatible action majors: `actions/checkout@v7`, `actions/setup-python@v7`, `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5`, and `actions/deploy-pages@v5`;
 - GitHub Issues and private security reporting configured as contact channels;
 - temporary support email retained only in Privacy Policy and Data Deletion pages until a Meta Data Deletion Callback is implemented;
 - no analytics, cookies, forms, external scripts, external fonts, or CDN dependencies.
@@ -32,11 +32,13 @@ The English-only, GitHub-contact implementation was pushed in `feat/github-conta
 ## Validation
 
 - local validator: `LEGAL_HUB_VALIDATION=PASS`
-- local HTTP: all 15 checked paths returned 200 with non-empty bodies
-- pull-request validation: PASS, run `30174039071`
-- main validation: PASS, run `30174049860`
-- Pages deployment: PASS, run `30174049862`
-- live HTTP and content: PASS; all 15 checked HTTPS paths returned 200, all HTML is English-only, and contact pages contain GitHub Issues and private security-reporting links
+- local sitemap validation: PASS; all 11 listed URLs map to existing files and are unique HTTPS URLs under the configured Pages base URL
+- pull-request validation: PASS, run `30174337060`
+- main validation: PASS, run `30174357465`
+- Pages deployment: PASS, run `30174357461`
+- live sitemap HTTP and content: PASS; all 11 listed HTTPS URLs returned 200 with non-empty bodies and no GitHub Pages 404 response
+- live language check: PASS; no Cyrillic content or language switchers are present
+- live support-email scope: PASS; the support email and `Meta Data Deletion Callback` notice appear only on the four Privacy Policy and Data Deletion URLs
 - mobile layout at 360 px: PASS on the RepoLynx Contact page; no horizontal overflow, one `h1`, no scripts or forms, no Cyrillic, and all GitHub contact routes present
 
 ## Published URLs
