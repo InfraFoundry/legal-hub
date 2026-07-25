@@ -2,7 +2,8 @@
   "organization": "InfraFoundry",
   "repository": "legal-hub",
   "base_url": "https://infrafoundry.github.io/legal-hub",
-  "support_email": "kodo.app.labs@gmail.com",
+  "contact_url": "https://github.com/InfraFoundry/legal-hub/issues",
+  "security_contact_url": "https://github.com/InfraFoundry/legal-hub/security/advisories/new",
   "last_updated": "2026-07-25",
   "projects": {
     "repolynx": {

@@ -208,13 +208,6 @@ li + li {
   color: var(--muted);
 }
 
-.language-links {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-.language-links a,
 .button-link {
   display: inline-block;
   padding: 0.42rem 0.75rem;
@@ -264,16 +257,6 @@ li + li {
 .meta {
   color: var(--muted);
   font-size: 0.95rem;
-}
-
-.language-section {
-  margin-top: 3.25rem;
-  padding-top: 2.5rem;
-  border-top: 2px solid var(--border);
-}
-
-.language-section > h2 {
-  margin-top: 0.25rem;
 }
 
 .contact-list {

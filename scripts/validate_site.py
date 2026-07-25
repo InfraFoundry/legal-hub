@@ -13,7 +13,10 @@ from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://infrafoundry.github.io/legal-hub"
-SUPPORT_EMAIL = "kodo.app.labs@gmail.com"
+CONTACT_URL = "https://github.com/InfraFoundry/legal-hub/issues"
+SECURITY_CONTACT_URL = (
+    "https://github.com/InfraFoundry/legal-hub/security/advisories/new"
+)
 
 REQUIRED_FILES = (
     ".github/workflows/validate.yml",
@@ -68,6 +71,12 @@ TEXT_SUFFIXES = {
     ".yml",
     ".yaml",
 }
+
+EMAIL_ADDRESS_PATTERN = re.compile(
+    r"(?i)\b[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@"
+    r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
+    r"(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+\b"
+)
 
 
 class SiteHTMLParser(HTMLParser):
@@ -205,12 +214,15 @@ def validate_config(errors: list[str]) -> None:
         "organization": "InfraFoundry",
         "repository": "legal-hub",
         "base_url": BASE_URL,
-        "support_email": SUPPORT_EMAIL,
+        "contact_url": CONTACT_URL,
+        "security_contact_url": SECURITY_CONTACT_URL,
         "last_updated": "2026-07-25",
     }
     for key, value in expected.items():
         if config.get(key) != value:
             errors.append(f"site.config.json has unexpected {key!r}")
+    if "support_email" in config:
+        errors.append("site.config.json must not contain support_email")
 
 
 def validate_html(errors: list[str]) -> None:
@@ -229,6 +241,10 @@ def validate_html(errors: list[str]) -> None:
             errors.append(f"{relative}: missing HTML doctype")
         if "http://" in text.lower():
             errors.append(f"{relative}: insecure http:// URL found")
+        if "mailto:" in text.lower():
+            errors.append(f"{relative}: email links are not allowed")
+        if re.search(r"[\u0400-\u04ff]", text):
+            errors.append(f"{relative}: Cyrillic text is not allowed")
 
         parser = SiteHTMLParser()
         try:
@@ -280,16 +296,18 @@ def validate_policy_content(errors: list[str]) -> None:
         "repolynx": {
             "privacy": (
                 "RepoLynx",
-                SUPPORT_EMAIL,
+                CONTACT_URL,
                 "data-deletion.html",
+                "GitHub Issues are public",
                 "password",
                 "access token",
             ),
             "deletion": (
-                SUPPORT_EMAIL,
+                CONTACT_URL,
                 "RepoLynx Data Deletion Request",
                 "7 days",
                 "30 days",
+                "GitHub Issues are public",
                 "password",
                 "access token",
             ),
@@ -297,16 +315,18 @@ def validate_policy_content(errors: list[str]) -> None:
         "gitpulse": {
             "privacy": (
                 "GitPulse",
-                SUPPORT_EMAIL,
+                CONTACT_URL,
                 "data-deletion.html",
+                "GitHub Issues are public",
                 "password",
                 "access token",
             ),
             "deletion": (
-                SUPPORT_EMAIL,
+                CONTACT_URL,
                 "GitPulse Data Deletion Request",
                 "7 days",
                 "30 days",
+                "GitHub Issues are public",
                 "password",
                 "access token",
             ),
@@ -336,6 +356,18 @@ def validate_policy_content(errors: list[str]) -> None:
                 "repolynx/data-deletion.html: callback limitation is incomplete"
             )
 
+    for project in ("repolynx", "gitpulse"):
+        path = ROOT / project / "contact.html"
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for term in (CONTACT_URL, SECURITY_CONTACT_URL, "GitHub Issues are public"):
+            if term not in text:
+                errors.append(
+                    f"{path.relative_to(ROOT).as_posix()}: "
+                    f"required GitHub contact content missing: {term}"
+                )
+
 
 def validate_service_files(errors: list[str]) -> None:
     sitemap_path = ROOT / "sitemap.xml"
@@ -353,6 +385,16 @@ def validate_service_files(errors: list[str]) -> None:
         expected = f"Sitemap: {BASE_URL}/sitemap.xml"
         if expected not in robots:
             errors.append("robots.txt: sitemap declaration is missing")
+
+    security_path = ROOT / ".well-known/security.txt"
+    if security_path.is_file():
+        security = security_path.read_text(encoding="utf-8")
+        if f"Contact: {SECURITY_CONTACT_URL}" not in security:
+            errors.append("security.txt: GitHub security contact is missing")
+        if "Preferred-Languages: en" not in security:
+            errors.append("security.txt: expected English as the preferred language")
+        if "mailto:" in security.lower():
+            errors.append("security.txt: email contact is not allowed")
 
 
 def validate_secret_hygiene(errors: list[str]) -> None:
@@ -374,6 +416,8 @@ def validate_secret_hygiene(errors: list[str]) -> None:
     for path in iter_text_files():
         relative = path.relative_to(ROOT).as_posix()
         text = path.read_text(encoding="utf-8", errors="replace")
+        if EMAIL_ADDRESS_PATTERN.search(text):
+            errors.append(f"{relative}: email address found")
         for pattern in assignment_patterns:
             if pattern.search(text):
                 errors.append(

@@ -1,6 +1,6 @@
 # InfraFoundry Legal Hub
 
-Static, bilingual public legal documents for projects operated under the InfraFoundry technical namespace.
+Static English-language public legal documents for projects operated under the InfraFoundry technical namespace.
 
 Published site: <https://infrafoundry.github.io/legal-hub/>
 
@@ -11,7 +11,7 @@ The site currently contains separate legal areas for:
 - **RepoLynx** — product and authorized publishing infrastructure;
 - **GitPulse** — media brand and editorial/social publishing channels.
 
-Each area has its own project overview, Privacy Policy, User Data Deletion Instructions, Terms of Service, and Contact page in English and Russian.
+Each area has its own English-language project overview, Privacy Policy, User Data Deletion Instructions, Terms of Service, and Contact page.
 
 ## Repository structure
 
@@ -37,14 +37,14 @@ The site deliberately has no Jekyll, Node.js, npm, static-site generator, forms,
 1. Add the project to `site.config.json`.
 2. Create a project directory containing `index.html`, `privacy.html`, `data-deletion.html`, `terms.html`, and `contact.html`.
 3. Use `../assets/styles.css` and `../assets/favicon.svg` from nested pages.
-4. Provide English first and Russian second, with one `h1` per page.
+4. Provide English content with one `h1` per page.
 5. Add every public page URL to `sitemap.xml`.
 6. Add the new files and required policy checks to `scripts/validate_site.py`.
 7. Run the validator before opening a pull request.
 
-## Change the support email or update date
+## Change the GitHub contact or update date
 
-`site.config.json` is the canonical reference for the support email and document date. Because this repository is a static site without a generator, update the visible values in all affected HTML, `security.txt`, `sitemap.xml`, and documentation at the same time. The validator checks the configured constants and required legal-page values for consistency.
+`site.config.json` is the canonical reference for the GitHub Issues contact, private security-reporting URL, and document date. Because this repository is a static site without a generator, update the visible values in all affected HTML, `security.txt`, `sitemap.xml`, and documentation at the same time. The validator checks the configured constants and required legal-page values for consistency.
 
 ## Local development
 
@@ -91,7 +91,9 @@ For **RepoLynx Media Publisher**:
 
 Never commit App Secret, access tokens, refresh tokens, passwords, recovery codes, private keys, OAuth authorization codes, or production environment files.
 
-The public contact is `kodo.app.labs@gmail.com`. Do not send secrets, authentication codes, private keys, or payment information to that address.
+Public privacy, deletion, correction, terms, and general requests use [GitHub Issues](https://github.com/InfraFoundry/legal-hub/issues). Issues are public: never post secrets, authentication codes, private keys, payment information, or sensitive personal data.
+
+Security vulnerabilities use [GitHub private vulnerability reporting](https://github.com/InfraFoundry/legal-hub/security/advisories/new).
 
 ## Deletion instructions are not a callback
 
