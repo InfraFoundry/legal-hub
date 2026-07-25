@@ -18,14 +18,14 @@ The implementation was pushed in `feat/legal-hub-v1`, reviewed through pull requ
 
 ## Implemented
 
-- responsive, accessible bilingual EN/RU legal hub;
+- responsive, accessible English-language legal hub;
 - separate RepoLynx and GitPulse project areas;
 - Privacy, User Data Deletion, Terms, and Contact pages for both projects;
 - required root index, 404, robots, sitemap, security.txt, `.nojekyll`, favicon, and shared CSS;
 - standard-library Python validation;
 - pull-request and main-branch validation workflow;
 - GitHub Actions Pages deployment workflow;
-- public support email centralized in `site.config.json`;
+- GitHub Issues and private security reporting configured as contact channels;
 - no analytics, cookies, forms, external scripts, external fonts, or CDN dependencies.
 
 ## Validation
@@ -36,7 +36,7 @@ The implementation was pushed in `feat/legal-hub-v1`, reviewed through pull requ
 - main validation: PASS, run `30173510591`
 - Pages deployment: PASS, run `30173510577`
 - live HTTP: PASS; all nine required HTTPS URLs returned 200 with non-empty bodies and no GitHub 404
-- mobile layout at 360 px: PASS on the published RepoLynx Privacy Policy; no horizontal overflow, stylesheet loaded, one `h1`, no scripts or forms, and EN/RU sections present
+- mobile layout at 360 px: PASS on the published RepoLynx Privacy Policy; no horizontal overflow, stylesheet loaded, one `h1`, no scripts or forms
 
 ## Published URLs
 
