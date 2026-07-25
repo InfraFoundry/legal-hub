@@ -1,18 +1,18 @@
 # InfraFoundry Legal Hub Deployment Report
 
-Generated at UTC: 2026-07-25 20:00:43 UTC  
-Generated at local time: 2026-07-25 23:00:43 +03:00  
-Repository: <https://github.com/InfraFoundry/legal-hub>  
-Branch: `feat/legal-hub-v1`  
-Implementation commit SHA: `841c3844dcec98377ded09544c6efb651244cf79`  
-Workflow run: Pending remote publication  
-Pages URL: <https://infrafoundry.github.io/legal-hub/>
+- Generated at UTC: 2026-07-25 20:04:41 UTC
+- Generated at local time: 2026-07-25 23:04:41 +03:00
+- Repository: <https://github.com/InfraFoundry/legal-hub>
+- Branch: `feat/legal-hub-v1`
+- Implementation commit SHA: `ec160791dface1a802c6b49bf682a53f0c77a3bf`
+- Workflow run: Not created; remote rejected branch push
+- Pages URL: <https://infrafoundry.github.io/legal-hub/>
 
 ## Result
 
 `BLOCKED`
 
-The complete implementation is committed locally. Remote publication, GitHub Actions, Pages configuration, and live HTTP checks are pending GitHub authentication and will be updated in this report when available.
+The complete implementation is committed locally. A push to `origin/feat/legal-hub-v1` was attempted and rejected with HTTP 403 because the available Git credential belongs to `maksim4351`, which does not have write permission for `InfraFoundry/legal-hub`. The browser GitHub session is signed out, and GitHub CLI has no authenticated host. Remote publication cannot be completed without an account that has repository write access.
 
 ## Implemented
 
@@ -28,11 +28,12 @@ The complete implementation is committed locally. Remote publication, GitHub Act
 
 ## Validation
 
-- local validator: pending final documentation commit
-- GitHub Actions: not run; branch is not yet published
-- Pages: not deployed from this branch
-- live HTTP: not yet checked against this implementation
-- mobile layout at 360 px: pending browser verification
+- local validator: `LEGAL_HUB_VALIDATION=PASS`
+- local HTTP: all nine required paths returned 200 with non-empty bodies
+- GitHub Actions: not run; the branch could not be published
+- Pages: not enabled or deployed from this implementation
+- live HTTP: all nine required URLs returned HTTP 404 on 2026-07-25
+- mobile layout at 360 px: PASS for the root page and RepoLynx Privacy Policy; no horizontal overflow, stylesheet loaded, one `h1`, and EN/RU sections present
 
 ## Published URLs
 
@@ -49,7 +50,7 @@ The complete implementation is committed locally. Remote publication, GitHub Act
 
 ## Security Check
 
-- secrets: automated assigned-secret and private-key-marker scan configured
+- secrets: PASS; assigned-secret and private-key-marker scan found no secret
 - trackers: none
 - external scripts: none
 - forms: none
@@ -57,15 +58,13 @@ The complete implementation is committed locally. Remote publication, GitHub Act
 
 ## Manual Actions Required
 
-GitHub authentication is required before the branch can be pushed and a pull request can be opened. If the repository administrator has not enabled GitHub Actions as the Pages source, use:
+Authenticate GitHub CLI on this workstation with an account that has write and admin access to `InfraFoundry/legal-hub`, then resume this Codex task. Codex will push the branch, open the pull request, run and verify Actions, configure the Pages source shown below, and repeat the live HTTP checks.
 
 ```text
 Repository → Settings → Pages
 → Build and deployment
 → Source → GitHub Actions
 ```
-
-Then manually run the `Deploy Legal Hub to Pages` workflow.
 
 ## Future Backend Requirement
 
