@@ -1,0 +1,5 @@
+Contact: mailto:kodo.app.labs@gmail.com
+Preferred-Languages: en, ru
+Canonical: https://infrafoundry.github.io/legal-hub/.well-known/security.txt
+Policy: https://infrafoundry.github.io/legal-hub/repolynx/privacy.html
+Expires: 2027-07-25T00:00:00.000Z
